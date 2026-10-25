@@ -1,0 +1,4 @@
+# PostgreSQL driver with prebuilt binaries (no local compiler required).
+psycopg[binary]==3.2.6
+# Load local environment variables from .env.
+python-dotenv==1.0.1

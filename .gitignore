@@ -1,2 +1,15 @@
-\data
-.venv
+.env
+.env.*
+!.env.example
+.venv/
+.venv.previous*/
+data/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+.coverage
+htmlcov/
