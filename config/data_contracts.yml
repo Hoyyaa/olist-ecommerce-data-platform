@@ -1,0 +1,344 @@
+{
+  "contract_version": 1,
+  "sources": {
+    "orders": {
+      "file": "olist_orders_dataset.csv",
+      "required": true,
+      "rule_status": "provisional",
+      "primary_key": [
+        "order_id"
+      ],
+      "columns": {
+        "order_id": {
+          "type": "text",
+          "nullable": false
+        },
+        "customer_id": {
+          "type": "text",
+          "nullable": false
+        },
+        "order_status": {
+          "type": "text",
+          "nullable": false,
+          "allowed": [
+            "created",
+            "approved",
+            "invoiced",
+            "processing",
+            "shipped",
+            "delivered",
+            "unavailable",
+            "canceled"
+          ]
+        },
+        "order_purchase_timestamp": {
+          "type": "timestamp",
+          "format": "%Y-%m-%d %H:%M:%S",
+          "nullable": false
+        },
+        "order_approved_at": {
+          "type": "timestamp",
+          "format": "%Y-%m-%d %H:%M:%S",
+          "nullable": true
+        },
+        "order_delivered_carrier_date": {
+          "type": "timestamp",
+          "format": "%Y-%m-%d %H:%M:%S",
+          "nullable": true
+        },
+        "order_delivered_customer_date": {
+          "type": "timestamp",
+          "format": "%Y-%m-%d %H:%M:%S",
+          "nullable": true
+        },
+        "order_estimated_delivery_date": {
+          "type": "timestamp",
+          "format": "%Y-%m-%d %H:%M:%S",
+          "nullable": false
+        }
+      },
+      "foreign_keys": [
+        {
+          "columns": [
+            "customer_id"
+          ],
+          "references": "customers",
+          "reference_columns": [
+            "customer_id"
+          ],
+          "severity": "warning"
+        }
+      ]
+    },
+    "order_items": {
+      "file": "olist_order_items_dataset.csv",
+      "required": true,
+      "rule_status": "provisional",
+      "primary_key": [
+        "order_id",
+        "order_item_id"
+      ],
+      "columns": {
+        "order_id": {
+          "type": "text",
+          "nullable": false
+        },
+        "order_item_id": {
+          "type": "integer",
+          "nullable": false,
+          "min": 1
+        },
+        "product_id": {
+          "type": "text",
+          "nullable": false
+        },
+        "seller_id": {
+          "type": "text",
+          "nullable": false
+        },
+        "shipping_limit_date": {
+          "type": "timestamp",
+          "format": "%Y-%m-%d %H:%M:%S",
+          "nullable": false
+        },
+        "price": {
+          "type": "decimal",
+          "nullable": false,
+          "min": 0
+        },
+        "freight_value": {
+          "type": "decimal",
+          "nullable": false,
+          "min": 0
+        }
+      },
+      "foreign_keys": [
+        {
+          "columns": [
+            "order_id"
+          ],
+          "references": "orders",
+          "reference_columns": [
+            "order_id"
+          ],
+          "severity": "error"
+        },
+        {
+          "columns": [
+            "product_id"
+          ],
+          "references": "products",
+          "reference_columns": [
+            "product_id"
+          ],
+          "severity": "warning"
+        },
+        {
+          "columns": [
+            "seller_id"
+          ],
+          "references": "sellers",
+          "reference_columns": [
+            "seller_id"
+          ],
+          "severity": "warning"
+        }
+      ]
+    },
+    "customers": {
+      "file": "olist_customers_dataset.csv",
+      "required": true,
+      "rule_status": "provisional",
+      "primary_key": [
+        "customer_id"
+      ],
+      "columns": {
+        "customer_id": {
+          "type": "text",
+          "nullable": false
+        },
+        "customer_unique_id": {
+          "type": "text",
+          "nullable": false
+        },
+        "customer_zip_code_prefix": {
+          "type": "text",
+          "nullable": false
+        },
+        "customer_city": {
+          "type": "text",
+          "nullable": false
+        },
+        "customer_state": {
+          "type": "text",
+          "nullable": false
+        }
+      },
+      "foreign_keys": []
+    },
+    "products": {
+      "file": "olist_products_dataset.csv",
+      "required": true,
+      "rule_status": "provisional",
+      "primary_key": [
+        "product_id"
+      ],
+      "columns": {
+        "product_id": {
+          "type": "text",
+          "nullable": false
+        },
+        "product_category_name": {
+          "type": "text",
+          "nullable": true
+        },
+        "product_name_lenght": {
+          "type": "integer",
+          "nullable": true,
+          "min": 0
+        },
+        "product_description_lenght": {
+          "type": "integer",
+          "nullable": true,
+          "min": 0
+        },
+        "product_photos_qty": {
+          "type": "integer",
+          "nullable": true,
+          "min": 0
+        },
+        "product_weight_g": {
+          "type": "integer",
+          "nullable": true,
+          "min": 0
+        },
+        "product_length_cm": {
+          "type": "integer",
+          "nullable": true,
+          "min": 0
+        },
+        "product_height_cm": {
+          "type": "integer",
+          "nullable": true,
+          "min": 0
+        },
+        "product_width_cm": {
+          "type": "integer",
+          "nullable": true,
+          "min": 0
+        }
+      },
+      "foreign_keys": [
+        {
+          "columns": [
+            "product_category_name"
+          ],
+          "references": "translations",
+          "reference_columns": [
+            "product_category_name"
+          ],
+          "severity": "warning"
+        }
+      ]
+    },
+    "sellers": {
+      "file": "olist_sellers_dataset.csv",
+      "required": true,
+      "rule_status": "provisional",
+      "primary_key": [
+        "seller_id"
+      ],
+      "columns": {
+        "seller_id": {
+          "type": "text",
+          "nullable": false
+        },
+        "seller_zip_code_prefix": {
+          "type": "text",
+          "nullable": false
+        },
+        "seller_city": {
+          "type": "text",
+          "nullable": false
+        },
+        "seller_state": {
+          "type": "text",
+          "nullable": false
+        }
+      },
+      "foreign_keys": []
+    },
+    "order_payments": {
+      "file": "olist_order_payments_dataset.csv",
+      "required": true,
+      "rule_status": "provisional",
+      "primary_key": [
+        "order_id",
+        "payment_sequential"
+      ],
+      "columns": {
+        "order_id": {
+          "type": "text",
+          "nullable": false
+        },
+        "payment_sequential": {
+          "type": "integer",
+          "nullable": false,
+          "min": 1
+        },
+        "payment_type": {
+          "type": "text",
+          "nullable": false,
+          "allowed": [
+            "credit_card",
+            "boleto",
+            "voucher",
+            "debit_card",
+            "not_defined"
+          ]
+        },
+        "payment_installments": {
+          "type": "integer",
+          "nullable": false,
+          "min": 0
+        },
+        "payment_value": {
+          "type": "decimal",
+          "nullable": false,
+          "min": 0
+        }
+      },
+      "foreign_keys": [
+        {
+          "columns": [
+            "order_id"
+          ],
+          "references": "orders",
+          "reference_columns": [
+            "order_id"
+          ],
+          "severity": "warning"
+        }
+      ]
+    },
+    "translations": {
+      "file": "product_category_name_translation.csv",
+      "required": true,
+      "rule_status": "provisional",
+      "primary_key": [
+        "product_category_name"
+      ],
+      "columns": {
+        "product_category_name": {
+          "type": "text",
+          "nullable": false
+        },
+        "product_category_name_english": {
+          "type": "text",
+          "nullable": false
+        }
+      },
+      "foreign_keys": []
+    }
+  }
+}
